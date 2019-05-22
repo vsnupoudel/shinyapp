@@ -1,0 +1,63 @@
+---
+title: Comparing the "lm" function from *stats* package with "train" function from *caret*
+  package
+author: "Bishnu Poudel"
+date: "May 23, 2019"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning= FALSE, message= FALSE)
+```
+
+## Executive Summary
+
+In this presentation, I will compare the *outputs and coefficients* of the **lm** function from the **stats** package to the **train** function from the **caret** package. 
+
+I will run these two functions on the same data in order to generate two similar linear models. 
+
+- Here, in these slides we will compare the coefficients and p values of the resulting model.
+
+- Similarly, in the shiny web application I built, we can manually enter the input values, in order to compare the outputs/predictions of these models.
+
+
+Codes for the assigment are in the github repository below:
+
+## Coefficients of the models
+```{r stats, echo = TRUE,include=FALSE}
+mtcarsFac<-mtcars[,colnames(mtcars) %in% c("mpg","wt","qsec","am")]
+  mtcarsFac$am<- as.factor(mtcarsFac$am)
+library(caret);library(shiny); library(ggplot2)
+```
+```{r, echo=TRUE}
+summary( lm(mpg~wt+qsec+am, data=mtcarsFac))$coef  # stats package
+summary(train(mpg~wt+qsec+am, data=mtcarsFac, method="glm"))$coef #caret
+```
+
+
+## Including Server calculations
+Since I was not able to embed the application itself into the presentation, explaining the server calcuations here.
+*We will need shiny, ggplot2 and caret packages*
+```{r, echo = TRUE, eval=FALSE}
+library(shiny);  library(ggplot2);library(caret)
+```
+ *We create and store the two models. Model prediction is done inside a reactive clause, repeated for the modGLM model as well. The outputs of the model goes to the user interface.*
+```{r, echo = TRUE, eval=FALSE}
+  modLM<-lm(mpg~wt+qsec+am, data=mtcarsFac)
+  modGLM<-train(mpg~wt+qsec+am, data=mtcarsFac, method="glm")
+  model1pred <- reactive({
+    predict(modLM, newdata= data.frame(wt=weight,qsec=quarterTime
+                                       ,am=automatic_manual))})
+```
+
+
+
+## Conclusion
+
+As we witnessed the coefficients and p values are exactly same. 
+Therefore the two approaches are identical.
+
+Now, we can go ahead and test the results by providing actual inputs in our shiny web application!
+
+
+

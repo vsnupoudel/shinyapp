@@ -20,8 +20,8 @@ I will run these two functions on the same data in order to generate two similar
 
 - Similarly, in the shiny web application I built, we can manually enter the input values, in order to compare the outputs/predictions of these models.
 
-
 Codes for the assigment are in the github repository below:
+<https://github.com/vsnupoudel/shinyapp>
 
 ## Coefficients of the models
 ```{r stats, echo = TRUE,include=FALSE}
